@@ -131,5 +131,4 @@ class CustomUserViewSet(
     def subscribe(self, request, **kwargs):
         return post_and_delete_action(
             self, request, User, Subscription, SubscriptionSerializer, **kwargs
-        ) 
-        
+        )

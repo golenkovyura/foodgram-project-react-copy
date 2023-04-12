@@ -67,7 +67,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    
+
 class Subscription(models.Model):
     """Подписки на авторов."""
 
@@ -86,5 +86,4 @@ class Subscription(models.Model):
 
     class Meta:
         verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'  
-        
+        verbose_name_plural = 'Подписки'

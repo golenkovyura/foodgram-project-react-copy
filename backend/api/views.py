@@ -1,18 +1,14 @@
 from django.db.models import F, Sum
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 
 from rest_framework import viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework import filters, mixins, status, viewsets, serializers
-from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 
-from users.models import User
 from recipes.models import (Tag, Recipe, Favorite,
                             Shopping_cart, IngredientInRecipe,
-                            Ingredient) 
+                            Ingredient)
 from .serializers import (IngredientSerializer, TagSerializer,
                           RecipeGetSerializer, FavoriteSerializer,
                           RecipePostSerializer, RecipeShortSerializer,
@@ -35,7 +31,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = IngredientSerializer
     filter_backends = (DjangoFilterBackend, )
     filterset_class = IngredientFilter
-    
+
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """Эндпоинт  api/tags/.
@@ -54,7 +50,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     Страница доступна всем пользователям. Пагинация.
     Доступна фильтрация по избранному, автору, списку покупок и тегам.
 
-    POST запрос: Создать рецепт. Доступно только авторизованному пользователю.    
+    POST запрос: Создать рецепт. Доступно только авторизованному пользователю.
 
     Эндпоинт  api/recipes/id.
     GET запрос: получение рецепта по id. Доступно только авторизованным.
@@ -94,17 +90,26 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return Recipe.objects.all()
 
-
     @action(["POST", "DELETE"], detail=True)
     def favorite(self, request, **kwargs):
         return post_and_delete_action(
-            self, request, Recipe, Favorite, FavoriteSerializer, **kwargs
+            self,
+            request,
+            Recipe,
+            Favorite,
+            FavoriteSerializer,
+            **kwargs
         )
 
     @action(["POST", "DELETE"], detail=True)
     def shopping_cart(self, request, **kwargs):
         return post_and_delete_action(
-            self, request, Recipe, Shopping_cart, ShoppingCartSerializer, **kwargs
+            self,
+            request,
+            Recipe,
+            Shopping_cart,
+            ShoppingCartSerializer,
+            **kwargs
         )
 
     @action(
@@ -112,13 +117,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated, ]
     )
     def download_shopping_cart(self, request):
-        user = request.user        
+        user = request.user
         ingredients = IngredientInRecipe.objects.filter(
             recipe__shopping_cart__user=user).values(
             name=F('ingredient__name'),
             measurement_unit=F('ingredient__measurement_unit')).annotate(
             amount=Sum('amount')
-        )        
+        )
         data = []
         for ingredient in ingredients:
             data.append(
@@ -127,7 +132,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f'{ingredient["measurement_unit"]}'
             )
         content = 'Список покупок:\n\n' + '\n'.join(data)
-        filename = 'Shopping_cart.txt'        
+        filename = 'Shopping_cart.txt'
         request = HttpResponse(content, content_type='text/plain')
         request['Content-Disposition'] = f'attachment; filename={filename}'
         return request

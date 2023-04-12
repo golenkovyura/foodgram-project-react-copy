@@ -57,7 +57,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         'Картинка',
-        upload_to='recipes/images/',        
+        upload_to='recipes/images/',
     )
     text = models.TextField(
         'Описание рецепта',
@@ -68,21 +68,21 @@ class Recipe(models.Model):
         related_name='recipes',
     )
     tags = models.ManyToManyField(
-        Tag,        
+        Tag,
         related_name='recipes'
     )
     cooking_time = models.IntegerField(
         'Время приготовления в минутах',
         validators=[
             MinValueValidator(
-        1, 'Время приготовление должно быть не менее минуты'
+                1, 'Время приготовление должно быть не менее минуты'
             )
         ]
     )
     pub_date = models.DateTimeField(
         'Дата создания',
         auto_now_add=True
-    )    
+    )
 
     def __str__(self):
         return self.name
@@ -101,8 +101,8 @@ class IngredientInRecipe(models.Model):
     )
     ingredient = models.ForeignKey(
        Ingredient,
-       related_name='IngredientsInRecipe',      
-       on_delete=models.CASCADE       
+       related_name='IngredientsInRecipe',
+       on_delete=models.CASCADE
     )
     amount = models.IntegerField(
         'Колличество ингредиента в данном рецепте.',
@@ -136,7 +136,7 @@ class Shopping_cart(models.Model):
     user = models.ForeignKey(
         User,
         related_name='RecipeInShoppingList',
-        on_delete=models.CASCADE,   
+        on_delete=models.CASCADE,
     )
     recipe = models.ForeignKey(
         Recipe,

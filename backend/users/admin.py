@@ -23,5 +23,5 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    """Класс для настройки отображения данных о подписках."""    
+    """Класс для настройки отображения данных о подписках."""
     list_display = ('user', 'author')

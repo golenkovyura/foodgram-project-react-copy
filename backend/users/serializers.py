@@ -46,7 +46,7 @@ class UserGetSerializer(UserSerializer):
 
 class UserWithRecipesSerializer(UserGetSerializer):
     """Сериализатор для просмотра пользователя с рецептами."""
-    
+
     recipes = serializers.SerializerMethodField(read_only=True)
     recipes_count = serializers.SerializerMethodField(read_only=True)
 
@@ -55,8 +55,8 @@ class UserWithRecipesSerializer(UserGetSerializer):
         fields = UserGetSerializer.Meta.fields + (
             'recipes',
             'recipes_count'
-        )       
-    
+        )
+
     def get_recipes_count(self, obj):
         return obj.recipes.count()
 

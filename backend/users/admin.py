@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import User, Subscription
 
 
-
+@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     """ В админке возможность редактировать и удалять
     все данные о пользователях. Фильтрация по email и username.
@@ -25,6 +25,3 @@ class UserAdmin(admin.ModelAdmin):
 class SubscriptionAdmin(admin.ModelAdmin):
     """Класс для настройки отображения данных о подписках."""    
     list_display = ('user', 'author')
-
-
-admin.site.register(User, UserAdmin)

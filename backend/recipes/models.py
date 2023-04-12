@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+
 from users.models import User
-from django.db.models import Exists, OuterRef
 
 
 class Ingredient(models.Model):

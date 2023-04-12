@@ -1,4 +1,5 @@
 import django_filters
+
 from recipes.models import Ingredient, Recipe, Tag
 
 
@@ -12,7 +13,7 @@ class IngredientFilter(django_filters.FilterSet):
 
 
 class RecipeFilter(django_filters.FilterSet):
-    """Фильтр для рцептов."""
+    """Фильтр для рецептов."""
     tags = django_filters.ModelMultipleChoiceFilter(
         queryset=Tag.objects.all(),
         field_name="tags__slug",

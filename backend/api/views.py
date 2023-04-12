@@ -1,39 +1,27 @@
-from rest_framework import viewsets
-from rest_framework.permissions import AllowAny
-
-from users.models import User
-from recipes.models import Tag, Recipe, Favorite, Shopping_cart, IngredientInRecipe, Ingredient 
-from .serializers import IngredientSerializer, TagSerializer, RecipeGetSerializer, FavoriteSerializer
-from .serializers import RecipePostSerializer, RecipeShortSerializer, ShoppingCartSerializer
-
 from django.db.models import F, Sum
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, status, viewsets, serializers
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import filters, mixins, status, viewsets, serializers
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from django.http import HttpResponse
-from django_filters.rest_framework import DjangoFilterBackend
+
+from users.models import User
+from recipes.models import (Tag, Recipe, Favorite,
+                            Shopping_cart, IngredientInRecipe,
+                            Ingredient) 
+from .serializers import (IngredientSerializer, TagSerializer,
+                          RecipeGetSerializer, FavoriteSerializer,
+                          RecipePostSerializer, RecipeShortSerializer,
+                          ShoppingCartSerializer)
 from .filters import RecipeFilter, IngredientFilter
 from .permissions import IsAuthorOrAdminOrReadOnly
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from .pagination import CustomPagination
 from .utils import post_and_delete_action
 
-
-
-class RecipeShortSerializer(serializers.ModelSerializer):
-    '''Сериализатор для отображения рецептов при запросе подписок''' 
-
-    class Meta: 
-        model = Recipe
-        fields = (
-            'id',            
-            'name',
-            'image',             
-            'cooking_time'
-        )
-    
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """Эндпоинт  api/ingredients/.
@@ -93,7 +81,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return RecipePostSerializer
 
     def get_queryset(self):
-
         is_favorited = self.request.query_params.get('is_favorited')
         if is_favorited is not None and int(is_favorited) == 1:
             return Recipe.objects.filter(
@@ -131,8 +118,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             name=F('ingredient__name'),
             measurement_unit=F('ingredient__measurement_unit')).annotate(
             amount=Sum('amount')
-        )
-        
+        )        
         data = []
         for ingredient in ingredients:
             data.append(
@@ -145,4 +131,3 @@ class RecipeViewSet(viewsets.ModelViewSet):
         request = HttpResponse(content, content_type='text/plain')
         request['Content-Disposition'] = f'attachment; filename={filename}'
         return request
-

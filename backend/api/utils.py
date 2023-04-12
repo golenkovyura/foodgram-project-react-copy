@@ -1,12 +1,17 @@
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework import status, serializers
+
 from recipes.models import Recipe
 from users.models import User
 
 def post_and_delete_action(self, request, model_1, model_2, serializer, **kwargs):
-    """Добавление и удаление рецепта из списка покупок или избранного"""
+    """
+    Действия добавления и удаления:
+    рецепта в список покупок(model_1 == Recipe, model_2 == Shopping_list),
+    рецепта в избранное(model_1 == Recipe, model_2 == Favorite)
+    подписки на пользователей(model_1 == User, model_2 == Subscription)
+    """
 
     object_1 = get_object_or_404(model_1, id=kwargs['pk'])        
     data = request.data.copy()
@@ -50,3 +55,4 @@ def post_and_delete_action(self, request, model_1, model_2, serializer, **kwargs
 
         object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    

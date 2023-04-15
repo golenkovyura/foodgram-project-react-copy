@@ -35,13 +35,14 @@ def post_and_delete_action(
             status=status.HTTP_201_CREATED,
             data=self.get_serializer(object_1).data
         )
+
     elif request.method == "DELETE" and model_1 == Recipe:
         object = model_2.objects.filter(
             recipe=object_1, user=request.user
         )
         if not object.exists():
             return Response(
-                {'error': 'В списке покупок(в избранном) нет этого рецепта.'},
+                {'errors': 'В списке покупок(в избранном) нет этого рецепта.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         object.delete()
@@ -53,7 +54,7 @@ def post_and_delete_action(
         )
         if not object.exists():
             return Response(
-                {'error': 'Вы не подписаны на этого пользователя'},
+                {'errors': 'Вы не подписаны на этого пользователя'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

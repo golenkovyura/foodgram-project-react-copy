@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Recipe, Tag, IngredientInRecipe, Shopping_cart, Favorite, Ingredient
+from .models import Recipe, Tag, IngredientInRecipe, ShoppingCart, Favorite, Ingredient
 
 
 @admin.register(Recipe)
@@ -38,14 +38,6 @@ class IngredientInRecipeAdmin(admin.ModelAdmin):
     list_display = ('recipe', 'ingredient', 'amount')
 
 
-#@admin.register(TagRecipe)
-#class TagRecipeAdmin(admin.ModelAdmin):
-#    """Настройки отображения данных о тэгах привязанных к рецепту
-#    в интерфейсе администратора.
-#    """
-#    list_display = ('tag', 'recipe')
-
-
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
     """Настройки отображения данных о рецептах, которые пользователи отмечают избранными.
@@ -53,8 +45,8 @@ class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe')
 
 
-@admin.register(Shopping_cart)
-class Shopping_cartAdmin(admin.ModelAdmin):
+@admin.register(ShoppingCart)
+class ShoppingCartAdmin(admin.ModelAdmin):
     """Настройки отображения списка покупок."""
 
     list_display = ('user', 'recipe')

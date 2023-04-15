@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.db.models import UniqueConstraint
 from django.db import models
 
 
@@ -49,11 +50,7 @@ class User(AbstractUser):
 
     @property
     def is_guest(self):
-        return self.role == self.GUEST
-
-    @property
-    def is_authorized(self):
-        return self.role == self.AUTHORIZED
+        return self.role == self.GUEST    
 
     @property
     def is_admin(self):
@@ -86,4 +83,8 @@ class Subscription(models.Model):
 
     class Meta:
         verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
+        verbose_name_plural = 'Подписки'    
+        constraints = [
+            UniqueConstraint(fields=['user', 'author'],
+                             name='unique_subscription')
+            ]                     

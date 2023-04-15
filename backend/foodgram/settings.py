@@ -16,7 +16,7 @@ AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
-    'recipes.apps.RecipesConfig',    
+    'recipes.apps.RecipesConfig',
     'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,10 +24,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_filters',    
-    'rest_framework', 
-    'rest_framework.authtoken',        
-    'djoser',    
+    'django_filters',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +69,7 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST'),
         'PORT': os.getenv('DB_PORT')
     }
-} 
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -106,26 +106,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',        
+        'rest_framework.permissions.AllowAny',
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    "DEFAULT_PAGINATION_CLASS": "api.pagination.CustomPagination",     
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.CustomPagination',
+    'NON_FIELD_ERRORS_KEY': 'errors',
 }
 
 DJOSER = {
-    'PERMISSIONS': {
-        'user': ['rest_framework.permissions.AllowAny'],
-        'user_list': ['rest_framework.permissions.AllowAny'],
-    },      
-    'SERIALIZERS': {
-        'user_delete': 'djoser.serializers.UserDeleteSerializer',
-        'user_create': 'users.serializers.UserPostSerializer',
-        'user': 'users.serializers.UserGetSerializer',
-        'current_user': 'users.serializers.UserGetSerializer',        
-    },
     'HIDE_USERS': False,
 }
 

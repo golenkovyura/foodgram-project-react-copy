@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Recipe, Tag, IngredientInRecipe, ShoppingCart, Favorite, Ingredient
+from .models import (Recipe, Tag, IngredientInRecipe,
+                     ShoppingCart, Favorite, Ingredient)
 
 
 @admin.register(Recipe)
@@ -40,7 +41,8 @@ class IngredientInRecipeAdmin(admin.ModelAdmin):
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    """Настройки отображения данных о рецептах, которые пользователи отмечают избранными.
+    """Настройки отображения данных о рецептах,
+    которые пользователи отмечают избранными.
     """
     list_display = ('user', 'recipe')
 

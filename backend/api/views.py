@@ -206,7 +206,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return RecipePostSerializer
 
-    
     @action(["POST", "DELETE"], detail=True)
     def favorite(self, request, **kwargs):
         return post_and_delete_action(

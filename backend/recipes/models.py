@@ -51,7 +51,6 @@ class Tag(models.Model):
         return self.slug
 
 
-
 class Recipe(models.Model):
     '''Рецепт.'''
     author = models.ForeignKey(
@@ -90,7 +89,7 @@ class Recipe(models.Model):
     pub_date = models.DateTimeField(
         'Дата создания',
         auto_now_add=True
-    )  
+    )
 
     class Meta:
         verbose_name = 'Рецепт'
@@ -118,7 +117,7 @@ class IngredientInRecipe(models.Model):
         validators=[
             MinValueValidator(
                 1, 'Колличество ингредиента в рецептне не должно быть менее 1.'
-            )    
+            )
         ]
     )
 

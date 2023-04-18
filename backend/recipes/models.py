@@ -108,9 +108,9 @@ class IngredientInRecipe(models.Model):
         on_delete=models.CASCADE
     )
     ingredient = models.ForeignKey(
-       Ingredient,
-       related_name='IngredientsInRecipe',
-       on_delete=models.CASCADE
+        Ingredient,
+        related_name='IngredientsInRecipe',
+        on_delete=models.CASCADE
     )
     amount = models.IntegerField(
         'Колличество ингредиента в данном рецепте.',

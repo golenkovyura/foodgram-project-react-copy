@@ -13,23 +13,20 @@ database with tables"""
 
 
 class Command(BaseCommand):
-    # Show this when the user types help
     help = "Загрузка данных из ingredient.csv"
 
     def handle(self, *args, **options):
-    
         print("Загрузка ингредиентов.")
 
-
         count = 0
-        for row in DictReader(open('./data/ingredients.csv', encoding='utf-8')):
-            ingredient=Ingredient(
-                name=row['name'],                
+        for row in DictReader(
+            open('./data/ingredients.csv', encoding='utf-8')
+        ):
+            ingredient = Ingredient(
+                name=row['name'],
                 measurement_unit=row['m_unit']
-            )  
+            )
             ingredient.save()
-            count +=1
+            count += 1
 
-        print(f'Успешно загружено {count} ингредиентов')    
-
-    
+        print(f'Успешно загружено {count} ингредиентов')

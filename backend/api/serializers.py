@@ -43,7 +43,7 @@ class UserGetSerializer(UserSerializer):
 
         return Subscription.objects.filter(
             author=obj, user=request.user
-            ).exists()
+        ).exists()
 
 
 class UserWithRecipesSerializer(UserGetSerializer):
@@ -208,7 +208,7 @@ class RecipeGetSerializer(serializers.ModelSerializer):
 
         return ShoppingCart.objects.filter(
             recipe=obj, user=request.user
-            ).exists()
+        ).exists()
 
 
 class RecipeShortSerializer(serializers.ModelSerializer):
@@ -362,7 +362,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
     """Сериализатор для списка покупок."""
     user = serializers.PrimaryKeyRelatedField(
         read_only=True, default=serializers.CurrentUserDefault()
-        )
+    )
     recipe = serializers.PrimaryKeyRelatedField(
         queryset=Recipe.objects.all(),
         write_only=True,

@@ -17,19 +17,17 @@ class Command(BaseCommand):
     help = "Загрузка данных из tags.csv"
 
     def handle(self, *args, **options):
-    
-        print("Загрузка тагов.")
 
+        print("Загрузка тагов.")
 
         count = 0
         for row in DictReader(open('./data/tags.csv', encoding='utf-8')):
-            tag=Tag(
-                name=row['name'],                
+            tag = Tag(
+                name=row['name'],
                 slug=row['slug'],
                 color=row['color'],
-            )  
+            )
             tag.save()
-            count +=1
+            count += 1
 
-        print(f'Успешно загружено {count} тагов') 
-    
+        print(f'Успешно загружено {count} тагов')

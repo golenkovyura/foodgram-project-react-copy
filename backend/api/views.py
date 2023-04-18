@@ -120,7 +120,7 @@ class CustomUserViewSet(
     def subscriptions(self, request):
         users = User.objects.filter(
             following__user=request.user
-            ).prefetch_related('recipes')
+        ).prefetch_related('recipes')
         page = self.paginate_queryset(users)
 
         if page is not None:
@@ -131,7 +131,8 @@ class CustomUserViewSet(
             return self.get_paginated_response(serializer.data)
 
         serializer = UserWithRecipesSerializer(
-                users, many=True,  context={'request': request})
+            users, many=True, context={'request': request}
+        )
 
         return Response(serializer.data)
 

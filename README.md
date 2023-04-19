@@ -2,3 +2,5 @@
 dfd
 добавила push в докер
 пробую deploy
+установила compose
+

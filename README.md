@@ -1,5 +1,5 @@
 # praktikum_new_diplom
-dfd
+dddfd
 добавила push в докер
 пробую deploy
 установила compose

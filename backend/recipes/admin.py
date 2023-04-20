@@ -10,25 +10,25 @@ class RecipeAdmin(admin.ModelAdmin):
     в интерфейсе администратора.
     """
     list_display = (
-      'name', 'author', 'pub_date', 'display_tags', 'FavoriteRecipe',
-      )
+        'name', 'author', 'pub_date', 'display_tags', 'FavoriteRecipe',
+    )
     list_filter = ('name', 'author', 'tags')
     search_fields = ('name',)
     readonly_fields = ('FavoriteRecipe',)
     fields = (
-      'image',
-      ('name', 'author'),
-      'text',
-      ('tags', 'cooking_time'),
-      'FavoriteRecipe'
+        'image',
+        ('name', 'author'),
+        'text',
+        ('tags', 'cooking_time'),
+        'FavoriteRecipe'
     )
 
     def display_tags(self, obj):
-      return ', '.join([tag.name for tag in obj.tags.all()])
+        return ', '.join([tag.name for tag in obj.tags.all()])
     display_tags.short_description = 'Теги'
 
     def favorite(self, obj):
-      return obj.FavoriteRecipe.count()
+        return obj.FavoriteRecipe.count()
     favorite.short_description = 'Раз в избранном'
 
 
@@ -69,3 +69,4 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     """Настройки отображения списка покупок."""
 
     list_display = ('user', 'recipe')
+

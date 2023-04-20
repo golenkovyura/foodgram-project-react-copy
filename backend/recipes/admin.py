@@ -69,4 +69,3 @@ class ShoppingCartAdmin(admin.ModelAdmin):
     """Настройки отображения списка покупок."""
 
     list_display = ('user', 'recipe')
-

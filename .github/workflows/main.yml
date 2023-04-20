@@ -62,14 +62,13 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          script:
-            #fdf
-            #sudo docker-compose stop
-            #sudo docker-compose rm backend           
+          script:            
+            sudo docker-compose stop
+            sudo docker-compose rm backend           
             #rm .env
             #sudo fuser -k 80/tcp
             #sudo docker pull yanastasya/backend:latest
-            touch .env
+            #touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
             echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
@@ -77,4 +76,4 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-            #sudo docker-compose up -d
+            sudo docker-compose up -d

@@ -9,23 +9,18 @@ class RecipeAdmin(admin.ModelAdmin):
     """Настройка отображения данных о рецептах
     в интерфейсе администратора.
     """
-    list_display = ('name', 'author', 'pub_date', 'display_tags', 'favorite')
+    list_display = ('name', 'author', 'pub_date', 'display_tags',)
     list_filter = ('name', 'author', 'tags')
-    search_fields = ('name',)
-    readonly_fields = ('favorite',)
+    search_fields = ('name',)    
     fields = ('image',
               ('name', 'author'),
               'text',
               ('tags', 'cooking_time'),
-              'favorite')
+    )
 
     def display_tags(self, obj):
         return ', '.join([tag.name for tag in obj.tags.all()])
-    display_tags.short_description = 'Теги'
-
-    def favorite(self, obj):
-        return obj.favorite.count()
-    favorite.short_description = 'Раз в избранном'
+    display_tags.short_description = 'Теги'    
 
 
 @admin.register(Tag)

@@ -27,6 +27,7 @@ class RecipeAdmin(admin.ModelAdmin):
         return obj.favorite.count()
     favorite.short_description = 'Раз в избранном'
 
+
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     """Настройки отображения данных о тэгах

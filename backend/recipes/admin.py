@@ -11,7 +11,7 @@ class RecipeAdmin(admin.ModelAdmin):
     """
     list_display = (
       'name', 'author', 'pub_date', 'display_tags', 'FavoriteRecipe',
-    )
+      )
     list_filter = ('name', 'author', 'tags')
     search_fields = ('name',)
     readonly_fields = ('FavoriteRecipe',)
@@ -24,12 +24,12 @@ class RecipeAdmin(admin.ModelAdmin):
     )
 
     def display_tags(self, obj):
-        return ', '.join([tag.name for tag in obj.tags.all()])
+      return ', '.join([tag.name for tag in obj.tags.all()])
     display_tags.short_description = 'Теги'
 
     def favorite(self, obj):
-        return obj.FavoriteRecipe.count()
-    favorite.short_description = 'Раз в избранном'    
+      return obj.FavoriteRecipe.count()
+    favorite.short_description = 'Раз в избранном'
 
 
 @admin.register(Tag)

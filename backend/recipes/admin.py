@@ -10,10 +10,16 @@ class RecipeAdmin(admin.ModelAdmin):
     в интерфейсе администратора.
     """
 
-    list_display = ('pk', 'author', 'name',)
+    list_display = (
+      'pk', 'author', 'name', 'pub_date', 'favorite',
+    )
+    readonly_fields = ('favorite',)
     list_filter = ('author', 'name')
     filter_horizontal = ('ingredients',)
-
+    
+    def favorite(self, obj):
+        return obj.favorite.count()
+    favorite.short_description = 'Раз в избранном'
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):

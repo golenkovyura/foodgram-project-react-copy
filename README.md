@@ -1,6 +1,1 @@
-# praktikum_new_diplom
-dddfd
-добавила push в докер
-пробую deploy
-установила compose
-новая вм
+![Здесь видно, что workflow прошел успешно](https://github.com/yanastasya/foodgram-project-react/actions/workflows/Foodgram_workflow.yml/badge.svg)

@@ -88,4 +88,5 @@
 
 ### Авторы:
 backend - [Я](https://github.com/yanastasya)
+
 frontend - Яндекс.Практикум

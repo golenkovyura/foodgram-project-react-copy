@@ -4,11 +4,18 @@ from .models import (Recipe, Tag, IngredientInRecipe,
                      ShoppingCart, Favorite, Ingredient)
 
 
+class RecipeIngredientInline(admin.TabularInline):
+    model = IngredientInRecipe
+    min_num = 1
+    extra = 0
+
+
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     """Настройка отображения данных о рецептах
     в интерфейсе администратора.
     """
+    inlines = (RecipeIngredientInline, )
     list_display = (
         'name', 'author', 'pub_date',
     )

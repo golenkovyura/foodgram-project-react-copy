@@ -41,6 +41,8 @@
     python manage.py migrate
     python manage.py collectstatic --no-input
     python manage.py createsuperuser
+    python manage.py load_ingredienta_data
+    python manage.py load_tags_data
  ```
 
 6) Теперь прект доступен по адресам:
@@ -75,6 +77,8 @@
     python manage.py migrate
     python manage.py collectstatic
     python manage.py createsuperuser
+    python manage.py load_ingredienta_data
+    python manage.py load_tags_data
     ```
 6) Теперь прект доступен по адресам:
 
@@ -82,3 +86,6 @@
 - Докуметация к API: http://<внешний IP сервера>/api/docs/
 - Админка: http://<внешний IP сервера>/admin/
 
+### Авторы:
+backend - [Я](https://github.com/yanastasya)
+frontend - Яндекс.Практикум

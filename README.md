@@ -1,6 +1,6 @@
 
 ![Здесь видно, что workflow прошел успешно](https://github.com/yanastasya/foodgram-project-react/actions/workflows/main.yml/badge.svg)
-###Стек технологий:
+### Стек технологий:
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
 [![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat-square&logo=Django%20REST%20Framework)](https://www.django-rest-framework.org/)
@@ -21,7 +21,7 @@
 
 [Админка](http://158.160.59.159/admin/) (email: admin@mail.ru password:qwerty)
 
-Проект представлен в виде трёх контейнеров Docker: nginx, db
+Проект упакован в контейнеры и настроены следующие процессы: запуск тестов, обнавление образа проекта на DockerHub, автоматический деплой на боевой сервер при пуше в главную ветку master.
 
 ### Для разворота проекта локально:
 1) Установить и запустить [![docker](https://img.shields.io/badge/-Docker-464646?style=flat-square&logo=docker)](https://www.docker.com/)
@@ -78,6 +78,8 @@
     ```
 6) Теперь прект доступен по адресам:
 Главная страница: http://<внешний IP сервера>/recipes/
+
 Докуметация к API: http://<внешний IP сервера>/api/docs/
+
 Админка: http://<внешний IP сервера>/admin/
 

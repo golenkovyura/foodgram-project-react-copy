@@ -29,19 +29,24 @@
   -  DB_PORT=5432 # порт для подключения к БД
 4) из директории infra/ выполнить команду 
 ``` docker-compose up -d --build ```
-5) после того как контейнеры nginx, db (БД PostgreSQL) и backend будут запущены, выполнить команды:
+5) после того как контейнеры nginx, db (БД PostgreSQL) и backend будут запущены, необходимо в контейнере backend создать и применить миграции, собрать статику, создать суперпользователя и загрузить данные с ингредиентами и тегами для создания рецептов. Для этого последовательно выполнить следующие команды:
  ```
-    sudo docker-compose exec web backend
+    (sudo)* docker-compose exec web backend
+    python manage.py makemigrations users
+    python manage.py makemigrations recipes
     python manage.py migrate
     python manage.py collectstatic --no-input
     python manage.py createsuperuser
     python manage.py load_ingredienta_data
     python manage.py load_tags_data
  ```
+ * - если ОС Linux
 
-6) Теперь прект доступен по адресам:
+6) Теперь проект доступен по адресам:
 [главная страница](http://localhost/recipes/)
+
 [Докуметация к API](http://localhost/api/docs/)
+
 [Админка](http://localhost/admin/)
 
 
@@ -50,8 +55,9 @@
 2) в директориях backend и frontend находятся файлы Dockerfile. Необходимо собрать эти 2 образа и сохранить их на вашем репозитории DockerHub под соответствующими именами.
 3) подготовьте сервер к деплою: необходимо установить docker, docker-compose
 4) в файлах docker-compose.yaml (строка 14) и yamdb_workflow.yml (строки 55 и  72) изменить "yanastasya" на ваш username на DockerHub. 
-5) скопировать файлы docker-compose.yaml и nginx.conf и папку docs/ из проекта на сервер в домашнюю директорию
-6) Добавьте в Secrets GitHub Actions переменные окружения для работы базы данных:
+5) в файле nginx.conf изменить server name на внешний io вашего сервера.
+6) скопировать файлы docker-compose.yaml и nginx.conf и папку docs/ из проекта на сервер в домашнюю директорию
+7) Добавьте в Secrets GitHub Actions переменные окружения для работы базы данных:
   -  DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
   -  DB_NAME=postgres # имя базы данных
   -  POSTGRES_USER=postgres # логин для подключения к базе данных
@@ -64,16 +70,19 @@
   -  PASSPHRASE=фраза-пароль ,если использовали её при создании ssh-ключа  
   -  DOCKER_USERNAME и DOCKER_PASSWORD - ваши логин и пароль на докерхаб.
     
-6) выполните git push в ветку master, после чего будет запущен workflow: проверка кода flake8, обновление образов backend и frontend на вашем репозитории DockerHub и деплой на сервер
+6) выполните git push в ветку master, после чего будет запущен workflow: проверка кода flake8, обновление образа backend на вашем репозитории DockerHub и деплой на сервер
 7) после успешного деплоя зайти на сервер и выполнить команды:
     ```
-    sudo docker-compose exec backend bash
+    (sudo)* docker-compose exec web backend
+    python manage.py makemigrations users
+    python manage.py makemigrations recipes
     python manage.py migrate
-    python manage.py collectstatic
+    python manage.py collectstatic --no-input
     python manage.py createsuperuser
     python manage.py load_ingredienta_data
     python manage.py load_tags_data
     ```
+    * - если ОС Linux
 6) Теперь прект доступен по адресам:
 
 - Главная страница: http://<внешний IP сервера>/recipes/

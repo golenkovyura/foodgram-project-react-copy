@@ -253,9 +253,10 @@ ___
 > Поля is_favorited и is_in_shopping_cart определены отдельными методами.
 > Код смотри здесь [serializers.py](https://github.com/yanastasya/foodgram-project-react/blob/master/backend/api/serializers.py)
 
-### api/recipes/
+###  ``` /api/recipes/```
 #### POST запрос:
+
 ### Авторы:
-backend - [Я](https://github.com/yanastasya)
+backend - [Клинцова Анастасия](https://github.com/yanastasya)
 
 frontend - Яндекс.Практикум

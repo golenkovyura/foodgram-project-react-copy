@@ -1,6 +1,5 @@
+Дипломный проект курса Backend python-разработчик от Яндекс.Практикум, который я проходила с 06.2022 по 04.2023.
 
-![Здесь видно, что workflow прошел успешно](https://github.com/yanastasya/foodgram-project-react/actions/workflows/main.yml/badge.svg)
-### Стек технологий:
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
 [![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat-square&logo=Django%20REST%20Framework)](https://www.django-rest-framework.org/)
@@ -12,6 +11,17 @@
 [![GitHub%20Actions](https://img.shields.io/badge/-GitHub%20Actions-464646?style=flat-square&logo=GitHub%20actions)](https://github.com/features/actions)
 [![Yandex.Cloud](https://img.shields.io/badge/-Yandex.Cloud-464646?style=flat-square&logo=Yandex.Cloud)](https://cloud.yandex.ru/)
 
+Задание состояло в следующем:
+- написать бекэенд (API) к онлайн-сервису "Продуктовый помощник" по техническому заданию (спецификация API). 
+- подключить к приложению СУБД PostgreSQL
+- "подружить" бекэнд c фронтендом. (фронт был дан в виде приложения React)
+- Запустить проект на сервере в Яндекс.Облаке в трёх контейнерах: nginx, PostgreSQL и Django+Gunicorn. Контейнер с проектом должен обновляется на Docker Hub.
+В nginx настроена раздача статики, остальные запросы переадресуются в Gunicorn. Данные сохраняются в volumes.
+
+Работа была принята по итогам трёх код-ревью с комментариями по улучшению кода.
+
+Далее более подробно о сервисе Продуктовый помощник, инструкции по развороту проекта локально и на сервере. А также о том, как я выполняла это задание и о моих впечатлениях о курсе в целом.
+# 
 
 ### Приложение «Продуктовый помощник»: 
 Сайт, на котором пользователи могут публиковать рецепты, добавлять чужие рецепты в избранное и подписываться на публикации других авторов. Сервис «Список покупок» позволит пользователям создавать и скачивать список продуктов, которые нужно купить для приготовления выбранных блюд.

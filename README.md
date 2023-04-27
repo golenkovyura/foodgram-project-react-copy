@@ -247,6 +247,9 @@ ___
 > Код смотри здесь [filters.py](https://github.com/yanastasya/foodgram-project-react/blob/master/backend/api/filters.py)
 
 Пример ответа:
+> Для обработки запросов на просмотр и создание рецепта используются разные сериализаторы. В RecipeGetSerializer поля tags, author и ingradients возвращаются в виде объекта. Пришлось немного пострадать, чтобы добиться того, чтобы ingredient возвращался с id, name, measure_unit объекта модели Ingredient, а amount из объекта модели, связывающей рецепт с ингредиентом (IngredientInRecipe). Здесь оказалось, что я не совсем понимаю, как работают сериализаторы в джанго, пришлось разбираться.
+> Поля is_favorited и is_in_shopping_cart определены отдельными методами.
+> Код смотри здесь [serializers.py](https://github.com/yanastasya/foodgram-project-react/blob/master/backend/api/serializers.py)
 
 ### api/recipes/
 #### POST запрос:

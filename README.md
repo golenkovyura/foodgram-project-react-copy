@@ -221,12 +221,11 @@ ___
 
 Ниже опишу требования из ТЗ к работе эндпоинта api/recipes/{id} и прокомментирую то, как это было реализованно.
 Более подробно о других эндпоинтах можете увидеть в документации. Она будет доступна к просмотру после разворота проекта. Инструкции для этого смотри в гл.1
-Код, реализующий работу API смотри в директории [backend](https://github.com/yanastasya/foodgram-project-react/tree/master/backend) 
+Код, реализующий работу API, смотри в директории [backend](https://github.com/yanastasya/foodgram-project-react/tree/master/backend) 
 
 ### ``` /api/recipes/{id}```
-#### GET запрос:
+#### GET запрос: просмотр списка всех рецептов или отдельного рецепта по id.
 
-Посмотр списка всех рецептов или отдельного рецепта по id.
 > В urls.py данный маршрут задан с помощью DefaultRouter 
 > Код смотри здесь [urls.py](https://github.com/yanastasya/foodgram-project-react/blob/master/backend/api/urls.py)
 > Эндпоинт обрабатывается контроллером RecipeViewSet
@@ -256,12 +255,78 @@ ___
 > Код смотри здесь [filters.py](https://github.com/yanastasya/foodgram-project-react/blob/master/backend/api/filters.py)
 
 Пример ответа:
-> Для обработки запросов на просмотр и создание рецепта используются разные сериализаторы. В RecipeGetSerializer поля tags, author и ingradients возвращаются в виде объекта. Пришлось немного пострадать, чтобы добиться того, чтобы ingredient возвращался с id, name, measure_unit объекта модели Ingredient, а amount из объекта модели, связывающей рецепт с ингредиентом (IngredientInRecipe). Здесь оказалось, что я не совсем понимаю, как работают сериализаторы в джанго, пришлось разбираться.
+```
+{
+  "count": 123,
+  "next": "http://foodgram.example.org/api/recipes/?page=4",
+  "previous": "http://foodgram.example.org/api/recipes/?page=2",
+  "results": [
+    {
+      "id": 0,
+      "tags": [
+        {
+          "id": 0,
+          "name": "Завтрак",
+          "color": "#E26C2D",
+          "slug": "breakfast"
+        }
+      ],
+      "author": {
+        "email": "user@example.com",
+        "id": 0,
+        "username": "string",
+        "first_name": "Вася",
+        "last_name": "Пупкин",
+        "is_subscribed": false
+      },
+      "ingredients": [
+        {
+          "id": 0,
+          "name": "Картофель отварной",
+          "measurement_unit": "г",
+          "amount": 1
+        }
+      ],
+      "is_favorited": true,
+      "is_in_shopping_cart": true,
+      "name": "string",
+      "image": "http://foodgram.example.org/media/recipes/images/image.jpeg",
+      "text": "string",
+      "cooking_time": 1
+    }
+  ]
+}
+```
+> Для обработки запросов на просмотр и создание рецепта используются разные сериализаторы. В RecipeGetSerializer (для просмотра) поля tags, author и ingradients возвращаются в виде объекта. Пришлось немного пострадать, чтобы добиться того, чтобы ingredient возвращался с id, name, measure_unit объекта модели Ingredient, а amount из объекта модели, связывающей рецепт с ингредиентом (IngredientInRecipe). Здесь оказалось, что я не совсем понимаю, как работают сериализаторы в джанго, пришлось разбираться.
 > Поля is_favorited и is_in_shopping_cart определены отдельными методами.
 > Код смотри здесь [serializers.py](https://github.com/yanastasya/foodgram-project-react/blob/master/backend/api/serializers.py)
 
+
 ###  ``` /api/recipes/```
-#### POST запрос:
+#### POST запрос: создание рецепта.
+Доступно только авторизованному пользователю.
+Пример запроса(все поля обызательны):
+
+```
+{
+  "ingredients": [
+    {
+      "id": 1123,
+      "amount": 10
+    }
+  ],
+  "tags": [
+    1,
+    2
+  ],
+  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAgMAAABieywaAAAACVBMVEUAAAD///9fX1/S0ecCAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNoAAAAggCByxOyYQAAAABJRU5ErkJggg==",
+  "name": "string",
+  "text": "string",
+  "cooking_time": 1
+}
+```
+> Все поля обязательны. Название рецепта не должно быть более 150 символов, время приготовление не может быть менее минуты, ингредиенты в рецепте не должны повторятся. >Вся валидация происходит на уровне моделей и в сериализаторах.
+
 
 ### Авторы:
 backend - [Клинцова Анастасия](https://github.com/yanastasya)

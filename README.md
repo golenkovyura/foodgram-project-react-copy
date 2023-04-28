@@ -5,8 +5,7 @@
     2. Если на вашем ПК установлен Python3: скачайте репозиторий и следуйте инструкциям в README.
     3. Если на вашем ПК установлен Python3 и Docker, вы можете развернуть проект в контейнерах и запустить локально. Инструкции здесь.
     4. Если у вас есть доступ к удалённому серверу и вы не против установить не него Docker и Docker-compose, то здесь описано, как поднять проект на боевом сервере.
-    
-    
+        
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
 [![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat-square&logo=Django%20REST%20Framework)](https://www.django-rest-framework.org/)

@@ -360,4 +360,4 @@ ___
 ### Авторы:
 backend - [Клинцова Анастасия](https://github.com/yanastasya)
 
-frontend - Яндекс.Практикум
+frontend - Яндекс.Практикум.

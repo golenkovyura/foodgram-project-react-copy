@@ -8,7 +8,7 @@ services:
       - ./.env
   
   backend:    
-    image: yanastasya/backend:latest
+    image: yurgolenkoff/backend:latest
     restart: always    
     volumes:      
       - static_value:/app/static/      
@@ -21,7 +21,7 @@ services:
       - ./.env 
   
   frontend:    
-    image: yanastasya/frontend:latest
+    image: yurgolenkoff/frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:

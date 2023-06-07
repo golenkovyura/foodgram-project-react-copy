@@ -15,7 +15,7 @@ class RecipeAdmin(admin.ModelAdmin):
     """Настройка отображения данных о рецептах
     в интерфейсе администратора.
     """
-    inlines = (RecipeIngredientInline, )
+    inlines = (RecipeIngredientInline,)
     list_display = (
         'name', 'author', 'pub_date',
     )

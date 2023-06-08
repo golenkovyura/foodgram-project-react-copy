@@ -60,7 +60,13 @@ class Recipe(models.Model):
     )
     name = models.CharField(
         'Название рецепта',
-        max_length=200
+        max_length=200,
+        validators=[
+            RegexValidator(
+                regex=r'^[а-яА-ЯёЁa-zA-Z -]+$',
+                message='Введите корректное название рецепта'
+            )
+        ]
     )
     image = models.ImageField(
         'Картинка',

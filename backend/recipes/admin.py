@@ -39,12 +39,12 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'measurement_unit')
 
 
-@admin.register(IngredientInRecipe)
-class IngredientInRecipeAdmin(admin.ModelAdmin):
-    """Настройки отображения данных об ингредиентах в рецептах
-    в интерфейсе администратора.
-    """
-    list_display = ('recipe', 'ingredient', 'amount')
+# @admin.register(IngredientInRecipe)
+# class IngredientInRecipeAdmin(admin.ModelAdmin):
+#     """Настройки отображения данных об ингредиентах в рецептах
+#     в интерфейсе администратора.
+#     """
+#     list_display = ('recipe', 'ingredient', 'amount')
 
 
 @admin.register(Favorite)

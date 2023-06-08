@@ -3,12 +3,13 @@ from django.db.models import F, Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import HttpResponse
 
-from rest_framework import viewsets, status, mixins
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from djoser.serializers import SetPasswordSerializer
+from djoser.views import UserViewSet as DjoserUserViewSet
 
 from recipes.models import (Tag, Recipe, Favorite,
                             ShoppingCart, IngredientInRecipe,
@@ -26,12 +27,7 @@ from .pagination import CustomPagination
 from .utils import post_and_delete_action
 
 
-class CustomUserViewSet(
-    mixins.CreateModelMixin,
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    viewsets.GenericViewSet,
-):
+class CustomUserViewSet(DjoserUserViewSet):
     """
     Управление пользователями и подписками.
     Эндпоинты:

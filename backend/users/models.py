@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import UniqueConstraint
 from django.db import models
+from django.contrib.auth import password_validation
 
 
 class User(AbstractUser):
@@ -35,6 +36,7 @@ class User(AbstractUser):
     password = models.CharField(
         'Пароль',
         max_length=150,
+        validators=password_validation,
     )
 
     role = models.CharField(

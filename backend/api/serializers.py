@@ -1,6 +1,6 @@
 import base64
 
-from djoser.serializers import UserSerializer, UserCreateSerializer
+from djoser.serializers import UserSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework import status

@@ -88,7 +88,7 @@ class UserWithRecipesSerializer(UserGetSerializer):
         return RecipeShortSerializer(queryset, context=context, many=True).data
 
 
-class UserPostSerializer(UserCreateSerializer):
+class UserPostSerializer(serializers.ModelSerializer):
     """Сериализатор для создания пользователя."""
     class Meta:
         model = User

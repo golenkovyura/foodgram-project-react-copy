@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import UniqueConstraint
 from django.db import models
+from django.core.validators import MinValueValidator
 
 
 class User(AbstractUser):
@@ -35,6 +36,11 @@ class User(AbstractUser):
     password = models.CharField(
         'Пароль',
         max_length=150,
+        validators=[
+            MinValueValidator(
+                8, 'Минимальная длина пароля - 8 символов.'
+            )
+        ]
     )
 
     role = models.CharField(

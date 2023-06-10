@@ -88,18 +88,18 @@ class UserWithRecipesSerializer(UserGetSerializer):
         return RecipeShortSerializer(queryset, context=context, many=True).data
 
 
-class UserPostSerializer(serializers.ModelSerializer):
-    """Сериализатор для создания пользователя."""
-    class Meta:
-        model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'password',
-        )
+# class UserPostSerializer(serializers.ModelSerializer):
+#     """Сериализатор для создания пользователя."""
+#     class Meta:
+#         model = User
+#         fields = (
+#             'email',
+#             'id',
+#             'username',
+#             'first_name',
+#             'last_name',
+#             'password',
+#         )
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

@@ -18,7 +18,7 @@ from .serializers import (IngredientSerializer, TagSerializer,
                           RecipeGetSerializer, FavoriteSerializer,
                           RecipePostSerializer, RecipeShortSerializer,
                           ShoppingCartSerializer, UserGetSerializer,
-                          UserPostSerializer, SubscriptionSerializer,
+                          SubscriptionSerializer,
                           UserWithRecipesSerializer)
 from .filters import RecipeFilter, IngredientFilter
 from .permissions import IsAuthorOrAdminOrReadOnly
@@ -76,9 +76,9 @@ class CustomUserViewSet(
 
             return UserGetSerializer
 
-        elif self.request.method == 'POST':
+        # elif self.request.method == 'POST':
 
-            return UserPostSerializer
+        #     return UserPostSerializer
 
     def get_permissions(self):
         if self.action == 'retrieve':

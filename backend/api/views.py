@@ -1,192 +1,150 @@
-# from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash
 from django.db.models import F, Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import HttpResponse
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-# from djoser.serializers import SetPasswordSerializer
+from djoser.serializers import SetPasswordSerializer
 
 from recipes.models import (Tag, Recipe, Favorite,
                             ShoppingCart, IngredientInRecipe,
                             Ingredient)
-from users.models import User
+from users.models import User, Subscription
 from .serializers import (IngredientSerializer, TagSerializer,
                           RecipeGetSerializer, FavoriteSerializer,
                           RecipePostSerializer, RecipeShortSerializer,
-                          ShoppingCartSerializer, FollowSerializer)
+                          ShoppingCartSerializer, UserGetSerializer,
+                          UserPostSerializer, SubscriptionSerializer,
+                          UserWithRecipesSerializer)
 from .filters import RecipeFilter, IngredientFilter
 from .permissions import IsAuthorOrAdminOrReadOnly
 from .pagination import CustomPagination
 from .utils import post_and_delete_action
 
-from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
-from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.generics import ListAPIView
 
+class CustomUserViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    """
+    Управление пользователями и подписками.
+    Эндпоинты:
+    /api/users/
+    GET запрос: получить список всех зарегистрированных пользователей
+    Подключена пагинация.
+    POST запрос: создать нового пользователя. Доступно всем.
 
-# class CustomUserViewSet(
-#     mixins.CreateModelMixin,
-#     mixins.ListModelMixin,
-#     mixins.RetrieveModelMixin,
-#     viewsets.GenericViewSet,
-# ):
-#     """
-#     Управление пользователями и подписками.
-#     Эндпоинты:
-#     /api/users/
-#     GET запрос: получить список всех зарегистрированных пользователей
-#     Подключена пагинация.
-#     POST запрос: создать нового пользователя. Доступно всем.
+    /api/users/{id}
+    GET запрос: профиля пользователя. Доступно только авторизованным.
 
-#     /api/users/{id}
-#     GET запрос: профиля пользователя. Доступно только авторизованным.
+    /api/users/me
+    GET запрос: профиль текущего пользователя. Доступно только авторизованным.
 
-#     /api/users/me
-#     GET запрос: профиль текущего пользователя. Доступно толькоавторизованным.
+    /api/users/set_password/
+    POST запрос: смена пароля. Доступно только авторизованным.
 
-#     /api/users/set_password/
-#     POST запрос: смена пароля. Доступно только авторизованным.
+    /api/users/subscriptions/
+    GET запрос: Возвращает пользователей, на которых
+    подписан текущий пользователь.
+    Только авторизованным. В выдачу подключены рецепты с возможностью
+    установить лимит на их колличество.
 
-#     /api/users/subscriptions/
-#     GET запрос: Возвращает пользователей, на которых
-#     подписан текущий пользователь.
-#     Только авторизованным. В выдачу подключены рецепты с возможностью
-#     установить лимит на их колличество.
+    /api/users/{id}/subscribe/
+    POST запрос: подписаться на пользователя. Только авторизованным.
+    DELETE запрос: отписаться от пользователя.
+    """
 
-#     /api/users/{id}/subscribe/
-#     POST запрос: подписаться на пользователя. Только авторизованным.
-#     DELETE запрос: отписаться от пользователя.
-#     """
+    queryset = User.objects.all()
+    pagination_class = CustomPagination
 
-#     queryset = User.objects.all()
-#     pagination_class = CustomPagination
+    def get_instance(self):
+        return self.request.user
 
-#     def get_instance(self):
-#         return self.request.user
+    def get_serializer_class(self):
 
-#     def get_serializer_class(self):
+        if self.action in ['subscriptions', 'subscribe']:
 
-#         if self.action in ['subscriptions', 'subscribe']:
+            return UserWithRecipesSerializer
 
-#             return UserWithRecipesSerializer
+        elif self.request.method == 'GET':
 
-#         elif self.request.method == 'GET':
+            return UserGetSerializer
 
-#             return UserGetSerializer
+        elif self.request.method == 'POST':
 
-#         elif self.request.method == 'POST':
+            return UserPostSerializer
 
-#             return UserPostSerializer
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            self.permission_classes = [IsAuthenticated, ]
 
-#     def get_permissions(self):
-#         if self.action == 'retrieve':
-#             self.permission_classes = [IsAuthenticated, ]
+        return super(self.__class__, self).get_permissions()
 
-#         return super(self.__class__, self).get_permissions()
+    @action(
+        detail=False,
+        permission_classes=[IsAuthenticated],
+    )
+    def me(self, request, *args, **kwargs):
+        self.get_object = self.get_instance
 
-#     @action(
-#         detail=False,
-#         permission_classes=[IsAuthenticated],
-#     )
-#     def me(self, request, *args, **kwargs):
-#         self.get_object = self.get_instance
+        return self.retrieve(request, *args, **kwargs)
 
-#         return self.retrieve(request, *args, **kwargs)
-
-#     @action(
-#         ["POST"],
-#         detail=False,
-#         permission_classes=[IsAuthenticated]
-#     )
-#     def set_password(self, request, *args, **kwargs):
-#         serializer = SetPasswordSerializer(
-#             data=request.data, context={'request': request}
-#         )
-#         serializer.is_valid(raise_exception=True)
-
-#         self.request.user.set_password(serializer.data['new_password'])
-#         self.request.user.save()
-
-#         update_session_auth_hash(self.request, self.request.user)
-
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
-#     @action(
-#         detail=False,
-#         permission_classes=[IsAuthenticated]
-#     )
-#     def subscriptions(self, request):
-#         users = User.objects.filter(
-#             following__user=request.user
-#         ).prefetch_related('recipes')
-#         page = self.paginate_queryset(users)
-
-#         if page is not None:
-#             serializer = UserWithRecipesSerializer(
-#                 page, many=True,
-#                 context={'request': request})
-
-#             return self.get_paginated_response(serializer.data)
-
-#         serializer = UserWithRecipesSerializer(
-#             users, many=True, context={'request': request}
-#         )
-
-#         return Response(serializer.data)
-
-#     @action(
-#         ["POST", "DELETE"],
-#         detail=True,
-#         permission_classes=[IsAuthorOrAdminOrReadOnly],
-#     )
-#     def subscribe(self, request, **kwargs):
-#         return post_and_delete_action(
-#             self, request, User, Subscription,SubscriptionSerializer,**kwargs
-#         )
-
-class FollowUserView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request, id):
-        author = get_object_or_404(User, id=id)
-        if request.user.follower.filter(author=author).exists():
-            return Response(
-                {"errors": "Вы уже подписаны на автора"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        serializer = FollowSerializer(
-            request.user.follower.create(author=author),
-            context={"request": request},
+    @action(
+        ["POST"],
+        detail=False,
+        permission_classes=[IsAuthenticated]
+    )
+    def set_password(self, request, *args, **kwargs):
+        serializer = SetPasswordSerializer(
+            data=request.data, context={'request': request}
         )
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED
+        serializer.is_valid(raise_exception=True)
+
+        self.request.user.set_password(serializer.data['new_password'])
+        self.request.user.save()
+
+        update_session_auth_hash(self.request, self.request.user)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(
+        detail=False,
+        permission_classes=[IsAuthenticated]
+    )
+    def subscriptions(self, request):
+        users = User.objects.filter(
+            following__user=request.user
+        ).prefetch_related('recipes')
+        page = self.paginate_queryset(users)
+
+        if page is not None:
+            serializer = UserWithRecipesSerializer(
+                page, many=True,
+                context={'request': request})
+
+            return self.get_paginated_response(serializer.data)
+
+        serializer = UserWithRecipesSerializer(
+            users, many=True, context={'request': request}
         )
 
-    def delete(self, request, id):
-        author = get_object_or_404(User, id=id)
-        if request.user.follower.filter(author=author).exists():
-            request.user.follower.filter(
-                author=author
-            ).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(
-            {"errors": "Автор отсутсвует в списке подписок"},
-            status=status.HTTP_400_BAD_REQUEST,
+        return Response(serializer.data)
+
+    @action(
+        ["POST", "DELETE"],
+        detail=True,
+        permission_classes=[IsAuthorOrAdminOrReadOnly],
+    )
+    def subscribe(self, request, **kwargs):
+        return post_and_delete_action(
+            self, request, User, Subscription, SubscriptionSerializer, **kwargs
         )
-
-
-class SubscriptionsView(ListAPIView):
-    serializer_class = FollowSerializer
-    pagination_class = LimitOffsetPagination
-    permission_classes = (IsAuthenticated,)
-
-    def get_queryset(self):
-        return self.request.user.follower.all()
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

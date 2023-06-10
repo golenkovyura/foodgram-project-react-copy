@@ -382,7 +382,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return ShoppingCart.objects.create(
             user=self.context.get('request').user, **validated_data)
-    
+
 
 class FollowRecipeSerializer(serializers.ModelSerializer):
     image = Base64ImageField()

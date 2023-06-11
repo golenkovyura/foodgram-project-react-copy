@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from djoser.serializers import SetPasswordSerializer, UserCreateSerializer
+from djoser.serializers import SetPasswordSerializer
 
 from recipes.models import (Tag, Recipe, Favorite,
                             ShoppingCart, IngredientInRecipe,
@@ -18,7 +18,7 @@ from .serializers import (IngredientSerializer, TagSerializer,
                           RecipeGetSerializer, FavoriteSerializer,
                           RecipePostSerializer, RecipeShortSerializer,
                           ShoppingCartSerializer, UserGetSerializer,
-                          SubscriptionSerializer,
+                          UserPostSerializer, SubscriptionSerializer,
                           UserWithRecipesSerializer)
 from .filters import RecipeFilter, IngredientFilter
 from .permissions import IsAuthorOrAdminOrReadOnly
@@ -32,34 +32,6 @@ class CustomUserViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
-    """
-    Управление пользователями и подписками.
-    Эндпоинты:
-    /api/users/
-    GET запрос: получить список всех зарегистрированных пользователей
-    Подключена пагинация.
-    POST запрос: создать нового пользователя. Доступно всем.
-
-    /api/users/{id}
-    GET запрос: профиля пользователя. Доступно только авторизованным.
-
-    /api/users/me
-    GET запрос: профиль текущего пользователя. Доступно только авторизованным.
-
-    /api/users/set_password/
-    POST запрос: смена пароля. Доступно только авторизованным.
-
-    /api/users/subscriptions/
-    GET запрос: Возвращает пользователей, на которых
-    подписан текущий пользователь.
-    Только авторизованным. В выдачу подключены рецепты с возможностью
-    установить лимит на их колличество.
-
-    /api/users/{id}/subscribe/
-    POST запрос: подписаться на пользователя. Только авторизованным.
-    DELETE запрос: отписаться от пользователя.
-    """
-
     queryset = User.objects.all()
     pagination_class = CustomPagination
 
@@ -78,7 +50,7 @@ class CustomUserViewSet(
 
         elif self.request.method == 'POST':
 
-            return UserCreateSerializer
+            return UserPostSerializer
 
     def get_permissions(self):
         if self.action == 'retrieve':

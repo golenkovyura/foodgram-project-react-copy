@@ -1,6 +1,6 @@
 import base64
 
-from djoser.serializers import UserSerializer, UserCreateSerializer
+from djoser.serializers import UserSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework import status
@@ -88,18 +88,18 @@ class UserWithRecipesSerializer(UserGetSerializer):
         return RecipeShortSerializer(queryset, context=context, many=True).data
 
 
-class UserPostSerializer(UserCreateSerializer):
-    """Сериализатор для создания пользователя."""
-    class Meta:
-        model = User
-        fields = (
-            'email',
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'password',
-        )
+# class UserPostSerializer(UserCreateSerializer):
+#     """Сериализатор для создания пользователя."""
+#     class Meta:
+#         model = User
+#         fields = (
+#             'email',
+#             'id',
+#             'username',
+#             'first_name',
+#             'last_name',
+#             'password',
+#         )
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

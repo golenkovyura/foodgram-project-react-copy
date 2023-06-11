@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from djoser.serializers import SetPasswordSerializer
+from djoser.serializers import SetPasswordSerializer, UserCreateSerializer
 
 from recipes.models import (Tag, Recipe, Favorite,
                             ShoppingCart, IngredientInRecipe,
@@ -18,7 +18,7 @@ from .serializers import (IngredientSerializer, TagSerializer,
                           RecipeGetSerializer, FavoriteSerializer,
                           RecipePostSerializer, RecipeShortSerializer,
                           ShoppingCartSerializer, UserGetSerializer,
-                          UserPostSerializer, SubscriptionSerializer,
+                          SubscriptionSerializer,
                           UserWithRecipesSerializer)
 from .filters import RecipeFilter, IngredientFilter
 from .permissions import IsAuthorOrAdminOrReadOnly
@@ -78,7 +78,7 @@ class CustomUserViewSet(
 
         elif self.request.method == 'POST':
 
-            return UserPostSerializer
+            return UserCreateSerializer
 
     def get_permissions(self):
         if self.action == 'retrieve':

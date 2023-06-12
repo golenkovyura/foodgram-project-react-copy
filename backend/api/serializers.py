@@ -1,5 +1,6 @@
 import base64
 
+from django.contrib.auth.password_validation import validate_password
 from djoser.serializers import UserSerializer, UserCreateSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -100,6 +101,13 @@ class UserPostSerializer(UserCreateSerializer):
             'last_name',
             'password',
         )
+
+    def validate(self, attrs):
+        user = User(**attrs)
+        password = attrs.get("password")
+
+        validate_password(password, user)
+        return attrs
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

@@ -3,13 +3,15 @@ from django.core.validators import MinValueValidator, RegexValidator
 from django.db.models import UniqueConstraint
 
 from users.models import User
+from users.validators import UserNameValidator
 
 
 class Ingredient(models.Model):
     '''Ингредиенты для составления рецептов с указанием единиц измерения.'''
     name = models.CharField(
         'Наименование ингредиента',
-        max_length=200
+        max_length=200,
+        validators=[UserNameValidator()]
     )
     measurement_unit = models.CharField(
         'Единица измерения',
@@ -29,7 +31,8 @@ class Tag(models.Model):
     name = models.CharField(
         'Тэг',
         unique=True,
-        max_length=200
+        max_length=200,
+        validators=[UserNameValidator()]
     )
     slug = models.SlugField(unique=True, db_index=True)
     color = models.CharField(
@@ -37,7 +40,7 @@ class Tag(models.Model):
         max_length=7,
         validators=[
             RegexValidator(
-                regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+                regex=r'^#([A-Fa-f0-9]{3,6})$',
                 message='Введите значение цвета в формате HEX! Пример:#FF0000'
             )
         ]

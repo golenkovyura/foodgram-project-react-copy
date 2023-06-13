@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import UniqueConstraint
 from django.db import models
 
+from validators import check_username, UserNameValidator
+
 
 class User(AbstractUser):
     """Кастомная модель пользователя.
@@ -25,12 +27,14 @@ class User(AbstractUser):
     first_name = models.CharField(
         'Имя',
         max_length=150,
-        blank=False
+        blank=False,
+        validators=[check_username, UserNameValidator()]
     )
     last_name = models.CharField(
         'Фамилия',
         max_length=150,
-        blank=False
+        blank=False,
+        validators=[check_username, UserNameValidator()]
     )
     password = models.CharField(
         'Пароль',

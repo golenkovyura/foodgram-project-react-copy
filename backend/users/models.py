@@ -1,8 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import UniqueConstraint
 from django.db import models
+from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 
-from validators import check_username, UserNameValidator
+
+def check_username(value):
+    if value.lower() == 'me':
+        raise ValidationError('Имя пользователя не может быть таким')
 
 
 class User(AbstractUser):
@@ -28,13 +33,23 @@ class User(AbstractUser):
         'Имя',
         max_length=150,
         blank=False,
-        validators=[check_username, UserNameValidator()]
+        validators=[
+            RegexValidator(
+                regex=r'^[а-яА-ЯёЁa-zA-Z -]+$',
+                message='Введите корректное имя/название'
+            ), check_username
+        ]
     )
     last_name = models.CharField(
         'Фамилия',
         max_length=150,
         blank=False,
-        validators=[check_username, UserNameValidator()]
+        validators=[
+            RegexValidator(
+                regex=r'^[а-яА-ЯёЁa-zA-Z -]+$',
+                message='Введите корректное имя/название'
+            ), check_username
+        ]
     )
     password = models.CharField(
         'Пароль',

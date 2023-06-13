@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator, RegexValidator
 from django.db.models import UniqueConstraint
 
 from users.models import User
-from users.validators import UserNameValidator
 
 
 class Ingredient(models.Model):
@@ -11,7 +10,12 @@ class Ingredient(models.Model):
     name = models.CharField(
         'Наименование ингредиента',
         max_length=200,
-        validators=[UserNameValidator()]
+        validators=[
+            RegexValidator(
+                regex=r'^[а-яА-ЯёЁa-zA-Z -]+$',
+                message='Введите корректное имя/название'
+            )
+        ]
     )
     measurement_unit = models.CharField(
         'Единица измерения',
@@ -32,7 +36,12 @@ class Tag(models.Model):
         'Тэг',
         unique=True,
         max_length=200,
-        validators=[UserNameValidator()]
+        validators=[
+            RegexValidator(
+                regex=r'^[а-яА-ЯёЁa-zA-Z -]+$',
+                message='Введите корректное имя/название'
+            )
+        ]
     )
     slug = models.SlugField(unique=True, db_index=True)
     color = models.CharField(
@@ -67,7 +76,7 @@ class Recipe(models.Model):
         validators=[
             RegexValidator(
                 regex=r'^[а-яА-ЯёЁa-zA-Z -]+$',
-                message='Введите корректное название рецепта'
+                message='Введите корректное имя/название'
             )
         ]
     )
